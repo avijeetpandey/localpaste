@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: localpaste
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: localpaste-config
+  namespace: localpaste
+data:
+  APP_ENV: "production"
+  APP_PORT: "8000"
+  POSTGRES_HOST: "postgres"
+  POSTGRES_PORT: "5432"
+  POSTGRES_USER: "localpaste"
+  POSTGRES_DB: "localpaste"
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+  MINIO_ENDPOINT: "minio:9000"
+  MINIO_BUCKET: "pastes"
+  MINIO_SECURE: "false"
+  KGS_KEY_LENGTH: "6"
+  KGS_POOL_TARGET: "5000"
+  KGS_REFILL_THRESHOLD: "1000"
+  KGS_REFILL_INTERVAL_SECONDS: "15"
+  RATE_LIMIT_ANON_PER_MINUTE: "30"
+  RATE_LIMIT_AUTH_PER_MINUTE: "120"
+  JWT_ALGORITHM: "HS256"
+  JWT_EXPIRE_MINUTES: "0"
+  CORS_ORIGINS: "https://paste.example.com"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: localpaste-secrets
+  namespace: localpaste
+type: Opaque
+stringData:
+  POSTGRES_PASSWORD: "change-me-in-prod"
+  MINIO_ACCESS_KEY: "minioadmin"
+  MINIO_SECRET_KEY: "change-me-in-prod"
+  JWT_SECRET_KEY: "change-me-to-a-long-random-string"
+  AES_MASTER_KEY: "change-me-to-a-32-byte-string-aaa"
